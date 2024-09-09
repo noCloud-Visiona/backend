@@ -1,2 +1,2 @@
 # backend
-Repositório destinado ao Backend
+Repositório destinado ao Serviço de Cadastro e Autenticação
