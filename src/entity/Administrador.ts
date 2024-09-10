@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
 import { Usuario } from './Usuario';
 
 @Entity()
@@ -6,6 +6,7 @@ export class Administrador {
   @PrimaryGeneratedColumn()
   id_adm: number;
 
-  @OneToMany(() => Usuario, (usuario) => usuario.administrador)
-  usuarios: Usuario[];
+  // Um administrador pode ser apenas um usuário (One-to-One obrigatório)
+  @OneToOne(() => Usuario, usuario => usuario.administrador, { nullable: false })
+  usuario: Usuario;
 }

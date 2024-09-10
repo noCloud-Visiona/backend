@@ -3,9 +3,6 @@ import { Usuario } from '../entity/Usuario';
 import { Client } from 'pg';
 import { Publico } from '../entity/Publico';
 import { Administrador } from '../entity/Administrador';
-import { Historico } from '../entity/Historico';
-import { PossuiNivelAcesso } from '../entity/PossuiNivelAcesso';
-import { Possui } from '../entity/Possui';
 
 
 async function createDatabase() {
@@ -39,7 +36,7 @@ export const AppDataSource = new DataSource({
   username: 'postgres',
   password: 'topsp808',
   database: 'cadastro_autenticacao_db',
-  entities: [Usuario, Publico, Administrador, Historico, PossuiNivelAcesso, Possui],
+  entities: [Usuario, Publico, Administrador],
   synchronize: true,
 });
 
