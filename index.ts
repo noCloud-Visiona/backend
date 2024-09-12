@@ -1,0 +1,24 @@
+import express from 'express';
+import usuarioRoutes from './src/routes/usuarioRoutes';
+import { AppDataSource } from './src/config/database';
+
+const app = express();
+const PORT = 3000;
+
+// Middleware para parsear JSON
+app.use(express.json());
+
+// Inicializa a conexão com o banco de dados
+AppDataSource.initialize()
+  .then(() => {
+    console.log('Banco de dados conectado com sucesso');
+  })
+  .catch((error) => console.log('Erro ao conectar no banco de dados:', error));
+
+// Adiciona as rotas de usuário
+app.use('/noCloud', usuarioRoutes);
+
+// Inicia o servidor
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});

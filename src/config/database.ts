@@ -1,14 +1,12 @@
 import { DataSource } from 'typeorm';
 import { Usuario } from '../entity/Usuario';
 import { Client } from 'pg';
-import { Publico } from '../entity/Publico';
-import { Administrador } from '../entity/Administrador';
 
 
 async function createDatabase() {
   const client = new Client({
     host: 'localhost',
-    port:  5432,
+    port: 5432,
     user: 'postgres',
     password: 'topsp808',
   });
@@ -20,9 +18,9 @@ async function createDatabase() {
       await client.query('CREATE DATABASE cadastro_autenticacao_db');
       console.log('Banco de dados criado com sucesso!');
     } else {
-        console.log('Banco de dados já existe!');
+      console.log('Banco de dados já existe!');
     }
-} catch (error) {
+  } catch (error) {
     console.log('Erro ao criar o banco de dados: ', error);
   } finally {
     await client.end();
@@ -36,16 +34,40 @@ export const AppDataSource = new DataSource({
   username: 'postgres',
   password: 'topsp808',
   database: 'cadastro_autenticacao_db',
-  entities: [Usuario, Publico, Administrador],
+  entities: [Usuario],
   synchronize: true,
 });
 
+async function createAdminUser() {
+  // Cria o usuário administrador
+  const usuarioRepository = AppDataSource.getRepository(Usuario);
+
+
+  const existingAdmin = await usuarioRepository.findOneBy({ is_adm: true });
+
+  if (!existingAdmin) {
+
+    const novoUsuario = new Usuario();
+    novoUsuario.nome = 'adm';
+    novoUsuario.email = 'adm@nocloud.com';
+    novoUsuario.senha = 'adm';
+    novoUsuario.is_adm = true;
+
+    await usuarioRepository.save(novoUsuario);
+    console.log('Usuário administrador criado com sucesso!');
+  } else {
+    console.log('Usuário administrador já existe!');
+  }
+}
+
 async function initializeDatabase() {
   await createDatabase();
-  await AppDataSource.initialize().then(() => {
-    console.log('Conexão com o banco de dados estabelecida com sucesso!');
-  })
-  .catch((error) => console.log('Erro ao conectar com o banco de dados: ', error));
+  await AppDataSource.initialize()
+    .then(async () => {
+      console.log('Conexão com o banco de dados estabelecida com sucesso!');
+      await createAdminUser(); // Cria o usuário administrador
+    })
+    .catch((error) => console.log('Erro ao conectar com o banco de dados: ', error));
 }
 
 initializeDatabase();
