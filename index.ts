@@ -1,12 +1,15 @@
 import express from 'express';
 import usuarioRoutes from './src/routes/usuarioRoutes';
 import { AppDataSource } from './src/config/database';
+import { setupSwagger } from './src/swagger';
 
 const app = express();
 const PORT = 3000;
 
 // Middleware para parsear JSON
 app.use(express.json());
+
+
 
 // Inicializa a conexão com o banco de dados
 AppDataSource.initialize()
@@ -17,6 +20,14 @@ AppDataSource.initialize()
 
 // Adiciona as rotas de usuário
 app.use('/noCloud', usuarioRoutes);
+
+// Configuração do Swagger
+setupSwagger(app);
+
+app.listen(3001, () => {
+  console.log('Servidor rodando em http://localhost:3000');
+  console.log('Documentação disponível em http://localhost:3001/api-docs');
+});
 
 // Inicia o servidor
 app.listen(PORT, () => {
