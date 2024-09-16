@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import { Usuario } from '../entity/Usuario';
 import { Client } from 'pg';
+import * as bcrypt from 'bcrypt';
 
 
 async function createDatabase() {
@@ -39,18 +40,19 @@ export const AppDataSource = new DataSource({
 });
 
 async function createAdminUser() {
-  // Cria o usuário administrador
   const usuarioRepository = AppDataSource.getRepository(Usuario);
-
 
   const existingAdmin = await usuarioRepository.findOneBy({ is_adm: true });
 
   if (!existingAdmin) {
-
     const novoUsuario = new Usuario();
     novoUsuario.nome = 'adm';
     novoUsuario.email = 'adm@nocloud.com';
-    novoUsuario.senha = 'adm';
+
+    // Criptografa a senha do administrador
+    const saltRounds = 10;
+    novoUsuario.senha = await bcrypt.hash('adm', saltRounds);
+
     novoUsuario.is_adm = true;
 
     await usuarioRepository.save(novoUsuario);

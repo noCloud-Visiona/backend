@@ -19,4 +19,15 @@ export class UsuarioController {
       res.status(400).json({ mensagem: 'Erro ao criar o usuário', error: error.message });
     }
   }
+
+  async loginUsuario(req: Request, res: Response) {
+    const { email, senha } = req.body;
+
+    try {
+      const token = await this.usuarioService.loginUsuario(email, senha);
+      res.status(200).json({ token });
+    } catch (error) {
+      res.status(400).json({ mensagem: 'Erro ao fazer login', error: error.message });
+    }
+  }
 }

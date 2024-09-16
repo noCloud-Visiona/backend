@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { UsuarioController } from '../controllers/UsuarioController';
+import { verificarAdmin } from '../middleware/verificaAdmin';
 
 const router = Router();
 const usuarioController = new UsuarioController();
@@ -30,5 +31,11 @@ const usuarioController = new UsuarioController();
  *         description: Erro na criação do usuário.
  */
 router.post('/usuarios', (req, res) => usuarioController.criarUsuario(req, res));
+
+router.post('/login', (req, res) => usuarioController.loginUsuario(req, res));
+
+router.get('/admin-dashboard', verificarAdmin, (req, res) => {
+    res.status(200).json({ mensagem: 'Bem-vindo ao painel do administrador!' });
+  });
 
 export default router;

@@ -26,7 +26,7 @@ setupSwagger(app);
 
 app.listen(3001, () => {
   console.log('Servidor rodando em http://localhost:3000');
-  console.log('Documentação disponível em http://localhost:3001/api-docs');
+  console.log('Documentação disponível em http://localhost:3001/docs');
 });
 
 // Inicia o servidor
