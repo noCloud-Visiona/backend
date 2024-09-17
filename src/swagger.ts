@@ -25,5 +25,5 @@ const swaggerSpec = swaggerJSDoc(options);
 
 // Função para carregar a documentação do Swagger na aplicação Express
 export const setupSwagger = (app: Express) => {
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 };
