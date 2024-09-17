@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { UsuarioController } from '../controllers/UsuarioController';
 import { verificarAdmin } from '../middleware/verificaAdmin';
+import { UsuarioService } from '../services/UsuarioService';
 
 const router = Router();
 const usuarioController = new UsuarioController();
@@ -30,7 +31,18 @@ const usuarioController = new UsuarioController();
  *       400:
  *         description: Erro na criação do usuário.
  */
-router.post('/usuarios', (req, res) => usuarioController.criarUsuario(req, res));
+router.post('/usuarios', async (req, res) => {
+  const { nome, email, senha } = req.body;
+  const token = req.headers.authorization?.split(' ')[1]; // Extrai o token do header Authorization
+
+  try {
+    const usuarioService = new UsuarioService();
+    const novoUsuario = await usuarioService.criarUsuario(nome, email, senha, token);
+    res.status(201).json(novoUsuario);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
 router.post('/login', (req, res) => usuarioController.loginUsuario(req, res));
 

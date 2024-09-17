@@ -14,35 +14,48 @@ export class UsuarioService {
   }
 
   // Função para criar um usuário
-  async criarUsuario(nome: string, email: string, senha: string, is_adm: boolean): Promise<Usuario> {
-    // Verifica se o usuário que está tentando criar um novo usuário é um administrador
-    const usuarioCriador = await this.usuarioRepository.findOne({ where: { is_adm: is_adm } });
+  async criarUsuario(
+    nome: string, 
+    email: string, 
+    senha: string, 
+    token: string
+  ): Promise<Usuario> {
+    // Valida o token JWT
+    const secret = process.env.JWT_SECRET || 'defaultSecret';
+    let decodedToken;
   
-    if (usuarioCriador.is_adm === false) {
-      throw new Error('Somente um administrador pode criar um novo usuário');
+    try {
+      decodedToken = jwt.verify(token, secret);
+    } catch (error) {
+      throw new Error('Token inválido ou expirado');
+    }
+  
+    // Verifica se o usuário que está tentando criar um novo usuário é um administrador
+    if (!decodedToken.is_adm) {
+      throw new Error('Somente administradores podem criar novos usuários');
     }
   
     // Criptografa a senha antes de salvar
     const saltRounds = 10;
     const senhaHash = await bdcrypt.hash(senha, saltRounds);
   
-    // Cria um novo usuário
-    const novoUsuario = new Usuario();
-    novoUsuario.nome = nome;
-    novoUsuario.email = email;
-  
-    const usuarioEmail = await this.usuarioRepository.findOne({ where: { email: email } });
+    // Verifica se o e-mail já está cadastrado
+    const usuarioEmail = await this.usuarioRepository.findOne({ where: { email } });
     if (usuarioEmail) {
       throw new Error('E-mail já cadastrado');
     }
   
-    // Salva a senha criptografada no banco de dados
+    // Cria um novo usuário
+    const novoUsuario = new Usuario();
+    novoUsuario.nome = nome;
+    novoUsuario.email = email;
     novoUsuario.senha = senhaHash;
-    novoUsuario.is_adm = false;
+    novoUsuario.is_adm = false; // Por padrão, novos usuários não são administradores
   
     // Salva o novo usuário no banco de dados
     return await this.usuarioRepository.save(novoUsuario);
   }
+  
 
   async loginUsuario(email: string, senha: string): Promise<string> {
     // Busca o usuário no banco de dados
