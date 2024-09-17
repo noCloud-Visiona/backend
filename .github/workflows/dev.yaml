@@ -26,13 +26,13 @@ jobs:
       - name: Build and tag Docker image for Development
         run: |
           # cd lws-front
-          docker build -t jonasrsribeiro/nc-frontend -f Dockerfile.dev .
-          docker tag jonasrsribeiro/nc-frontend:latest jonasrsribeiro/nc-frontend:develop
+          docker build -t jonasrsribeiro/nc-controller-cadastro-autenticacao -f Dockerfile.dev .
+          docker tag jonasrsribeiro/nc-controller-cadastro-autenticacao:latest jonasrsribeiro/nc-controller-cadastro-autenticacao:develop
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u jonasrsribeiro --password-stdin
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push jonasrsribeiro/nc-frontend:latest
-          docker push jonasrsribeiro/nc-frontend:develop
+          docker push jonasrsribeiro/nc-controller-cadastro-autenticacao:latest
+          docker push jonasrsribeiro/nc-controller-cadastro-autenticacao:develop
