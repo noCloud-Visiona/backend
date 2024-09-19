@@ -17,4 +17,7 @@ export class Usuario {
   @Column()
   is_adm: boolean;
 
+  @Column()
+  is_premium: boolean;
+
 }
