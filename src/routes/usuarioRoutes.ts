@@ -53,8 +53,7 @@ router.post("/usuarios", async (req, res) => {
     const novoUsuario = await usuarioService.criarUsuario(
       nome,
       email,
-      senha,
-      token
+      senha
     );
     res.status(201).json(novoUsuario);
   } catch (error) {
@@ -227,5 +226,74 @@ router.delete("/usuarios/delete", async (req, res) => {
 router.get("/admin-dashboard", verificarAdmin, (req, res) => {
   res.status(200).json({ mensagem: "Bem-vindo ao painel do administrador!" });
 });
+
+/**
+ * @swagger
+ * /usuarios/tornarPremium:
+ *   post:
+ *     summary: Torna um usuário premium (apenas para administradores)
+ *     tags: [Usuários]
+ *     security:
+ *       - bearerAuth: []  # Requer token JWT
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_usuario:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Usuário transformado em premium com sucesso.
+ *       400:
+ *         description: Erro ao transformar o usuário em premium.
+ */
+router.post("/usuarios/tornarPremium", (req, res) => {
+  usuarioController.tornarUsuarioPremium(req, res);
+});
+
+/**
+ * @swagger
+ * /usuarios/listar:
+ *   get:
+ *     summary: Lista todos os usuários (somente administradores)
+ *     tags: [Usuários]
+ *     security:
+ *       - bearerAuth: []  # Indica que essa rota requer o token JWT
+ *     responses:
+ *       200:
+ *         description: Lista de todos os usuários retornada com sucesso.
+ *       400:
+ *         description: Erro ao listar os usuários.
+ */
+router.get("/usuarios/listar", (req, res) => usuarioController.listarTodosUsuarios(req, res));
+
+/**
+ * @swagger
+ * /usuarios/{id_usuario}:
+ *   get:
+ *     summary: Busca um usuário pelo ID
+ *     tags: [Usuários]
+ *     security:
+ *       - bearerAuth: []  # Requer token JWT
+ *     parameters:
+ *       - in: path
+ *         name: id_usuario
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID do usuário a ser buscado
+ *     responses:
+ *       200:
+ *         description: Usuário retornado com sucesso.
+ *       404:
+ *         description: Usuário não encontrado.
+ *       400:
+ *         description: Erro ao buscar o usuário.
+ */
+router.get("/usuarios/:id_usuario", (req, res) => usuarioController.buscarUsuarioPorId(req, res));
+
 
 export default router;

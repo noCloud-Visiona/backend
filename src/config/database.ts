@@ -55,6 +55,8 @@ async function createAdminUser() {
 
     novoUsuario.is_adm = true;
 
+    novoUsuario.is_premium = true;
+
     await usuarioRepository.save(novoUsuario);
     console.log('Usuário administrador criado com sucesso!');
   } else {
