@@ -10,10 +10,10 @@ services:
     image: postgres
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=topsp808
       - POSTGRES_postgres=test_postgres
     ports:
-      - "3432:3432"
+      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
@@ -124,5 +124,8 @@ services:
 
 volumes:
   postgres-data:
+<<<<<<< Updated upstream
   mysql-data:
+=======
+>>>>>>> Stashed changes
   front-data:

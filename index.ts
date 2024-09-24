@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import usuarioRoutes from './src/routes/usuarioRoutes';
 import { AppDataSource } from './src/config/database';
 import { setupSwagger } from './src/swagger';
@@ -9,7 +10,7 @@ const PORT = 3000;
 // Middleware para parsear JSON
 app.use(express.json());
 
-
+app.use(cors());
 
 // Inicializa a conexão com o banco de dados
 AppDataSource.initialize()
