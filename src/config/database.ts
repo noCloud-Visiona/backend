@@ -7,9 +7,9 @@ import * as bcrypt from 'bcrypt';
 async function createDatabase() {
   const client = new Client({
     host: 'localhost',
-    port: 5432,
+    port: 3432,
     user: 'postgres',
-    password: 'topsp808',
+    password: 'postgres',
   });
 
   try {
@@ -31,9 +31,9 @@ async function createDatabase() {
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
-  port: 5432,
+  port: 3432,
   username: 'postgres',
-  password: 'topsp808',
+  password: 'postgres',
   database: 'cadastro_autenticacao_db',
   entities: [Usuario],
   synchronize: true,
