@@ -1,7 +1,7 @@
 {
     "type": "postgres",
     "host": "host.docker.internal",
-    "port": 3432,
+    "port": 5432,
     "username": "postgres",
     "password": "postgres",
     "database": "cadastro_autenticacao_db",
