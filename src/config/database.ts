@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 
 async function createDatabase() {
   const client = new Client({
-    host: 'localhost',
+    host: 'host.docker.internal',
     port: 3432,
     user: 'postgres',
     password: 'postgres',
@@ -30,7 +30,7 @@ async function createDatabase() {
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  host: 'localhost',
+  host: 'host.docker.internal',
   port: 3432,
   username: 'postgres',
   password: 'postgres',
