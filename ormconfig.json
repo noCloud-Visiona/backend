@@ -1,0 +1,11 @@
+{
+    "type": "postgres",
+    "host": "host.docker.internal",
+    "port": 5432,
+    "username": "postgres",
+    "password": "postgres",
+    "database": "cadastro_autenticacao_db",
+    "entities": ["src/entity/*.ts"],
+    "synchronize": true
+  }
+  
