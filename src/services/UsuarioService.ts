@@ -67,7 +67,7 @@ export class UsuarioService {
     const token = jwt.sign(
       { id: usuario.id_usuario, nome: usuario.nome, is_adm: usuario.is_adm, is_premium: usuario.is_premium }, // Payload
       secret, 
-      { expiresIn: "1h" }
+      { expiresIn: "24h" }
     );
 
     // Define a mensagem com base nos valores de is_adm e is_premium
